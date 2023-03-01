@@ -1,6 +1,7 @@
 import React from "react";
 import { Table } from "antd";
 
+
 const columns = [
   {
     title: "SNo",
@@ -11,7 +12,6 @@ const columns = [
     dataIndex: "name",
     sorter: (a, b) => a.name.length - b.name.length,
   },
-
   {
     title: "Action",
     dataIndex: "action",
@@ -28,17 +28,16 @@ for (let i = 0; i < 46; i++) {
   });
 }
 
-const Categorylist = () => {
+const Brandlist = () => {
   
   return (
     <div>
-      <h3 className="mb-4 title">Product Categories</h3>
+      <h3 className="mb-4 title">Brands</h3>
       <div>
         <Table columns={columns} dataSource={data1} />
       </div>
-
     </div>
   );
 };
 
-export default Categorylist;
+export default Brandlist;
