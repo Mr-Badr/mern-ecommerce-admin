@@ -2,6 +2,13 @@ body {
   font-family: Roboto, sans-serif;
 }
 
+.ant-layout-content {
+  padding: 0 !important;
+  margin: 0 !important;
+  min-height: 100% !important;
+  transform: scale(0.9, 0.9);
+}
+
 .trigger {
   padding: 0 24px;
   font-size: 18px;
