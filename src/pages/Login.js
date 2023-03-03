@@ -21,6 +21,7 @@ const Login = () => {
             label="Email Address"
             id="email"
             name="email"
+            val="test"
           />
 
           <CustomInput
@@ -28,6 +29,7 @@ const Login = () => {
             label="Password"
             id="pass"
             name="password"
+            val="test"
           />
 
           <div className="mb-3 text-end">
