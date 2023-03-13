@@ -18,13 +18,13 @@ const columns = [
   {
     title: "Brand",
     dataIndex: "brand",
-/*     sorter: (a, b) => a.brand.length - b.brand.length,
- */  },
+    sorter: (a, b) => a.brand.length - b.brand.length,
+  },
   {
     title: "Category",
     dataIndex: "category",
-/*     sorter: (a, b) => a.category.length - b.category.length,
- */  },
+    sorter: (a, b) => a.category.length - b.category.length,
+  },
   {
     title: "Color",
     dataIndex: "color",

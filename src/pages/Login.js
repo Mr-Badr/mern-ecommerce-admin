@@ -1,35 +1,34 @@
 import React, { useEffect } from "react";
 import CustomInput from "../components/CustomInput";
 import { Link, useNavigate } from "react-router-dom";
+import * as yup from "yup";
 import { useFormik } from "formik";
-import * as yup from 'yup';
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../features/auth/authSlice";
 
+let schema = yup.object().shape({
+  email: yup
+    .string()
+    .email("Email should be valid")
+    .required("Email is Required"),
+  password: yup.string().required("Password is Required"),
+});
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  let schema = yup.object().shape({
-    email: yup
-      .string()
-      .email("Email should be valid")
-      .required("Email is Required"),
-    password: yup.string().required("Password is Required"),
-  });
-
   const formik = useFormik({
     initialValues: {
-      email: '',
-      password: ''
+      email: "",
+      password: "",
     },
     validationSchema: schema,
-    onSubmit: values => {
+    onSubmit: (values) => {
       dispatch(login(values));
-      alert(JSON.stringify(values, null, 2));
     },
   });
+  const authState = useSelector((state) => state);
 
-  const { user, isError, isSuccess, isLoading, message } = useSelector((state) => state.auth);
+  const { user, isError, isSuccess, isLoading, message } = authState.auth;
 
   useEffect(() => {
     if (isSuccess) {
@@ -37,7 +36,7 @@ const Login = () => {
     } else {
       navigate("");
     }
-  }, [user, isError, isSuccess, isLoading, message]);
+  }, [user, isError, isSuccess, isLoading]);
   return (
     <div className="py-5" style={{ background: "#ffd333", minHeight: "100vh" }}>
       <br />
@@ -49,7 +48,7 @@ const Login = () => {
         <h3 className="text-center title">Login</h3>
         <p className="text-center">Login to your account to continue.</p>
         <div className="error text-center">
-          {message.message === "Rejected" ? "You are not an Admin" : ""}
+          {message.message == "Rejected" ? "You are not an Admin" : ""}
         </div>
         <form action="" onSubmit={formik.handleSubmit}>
           <CustomInput
@@ -57,8 +56,9 @@ const Login = () => {
             label="Email Address"
             id="email"
             name="email"
+            onChng={formik.handleChange("email")}
+            onBlr={formik.handleBlur("email")}
             val={formik.values.email}
-            onChng={formik.handleChange('email')}
           />
           <div className="error mt-2">
             {formik.touched.email && formik.errors.email}
@@ -68,8 +68,9 @@ const Login = () => {
             label="Password"
             id="pass"
             name="password"
+            onChng={formik.handleChange("password")}
+            onBlr={formik.handleBlur("password")}
             val={formik.values.password}
-            onChng={formik.handleChange('password')}
           />
           <div className="error mt-2">
             {formik.touched.password && formik.errors.password}

@@ -5,9 +5,9 @@ import { AiFillDelete } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  /* deleteABrand, */
+  deleteABrand,
   getBrands,
-  /* resetState, */
+  resetState,
 } from "../features/brand/brandSlice";
 import CustomModal from "../components/CustomModal";
 
@@ -40,7 +40,7 @@ const Brandlist = () => {
   };
   const dispatch = useDispatch();
   useEffect(() => {
-    /* dispatch(resetState()); */
+    dispatch(resetState());
     dispatch(getBrands());
   }, []);
   const brandState = useSelector((state) => state.brand.brands);
@@ -67,14 +67,14 @@ const Brandlist = () => {
       ),
     });
   }
-  /* const deleteBrand = (e) => {
+  const deleteBrand = (e) => {
     dispatch(deleteABrand(e));
 
     setOpen(false);
     setTimeout(() => {
       dispatch(getBrands());
     }, 100);
-  }; */
+  };
   return (
     <div>
       <h3 className="mb-4 title">Brands</h3>
@@ -84,9 +84,9 @@ const Brandlist = () => {
       <CustomModal
         hideModal={hideModal}
         open={open}
-        /* performAction={() => {
+        performAction={() => {
           deleteBrand(brandId);
-        }} */
+        }}
         title="Are you sure you want to delete this brand?"
       />
     </div>

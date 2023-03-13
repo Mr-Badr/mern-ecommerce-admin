@@ -1,52 +1,53 @@
 import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
-import brandService from "./brandService";
+import colorService from "./colorService";
 
-export const getBrands = createAsyncThunk(
-  "brand/get-brands",
+export const getColors = createAsyncThunk(
+  "color/get-colors",
   async (thunkAPI) => {
     try {
-      return await brandService.getBrands();
+      return await colorService.getColors();
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
   }
 );
-export const getABrand = createAsyncThunk(
-  "brand/get-brand",
-  async (id, thunkAPI) => {
+export const createColor = createAsyncThunk(
+  "color/create-color",
+  async (colorData, thunkAPI) => {
     try {
-      return await brandService.getBrand(id);
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  }
-);
-export const createBrand = createAsyncThunk(
-  "brand/create-brand",
-  async (brandData, thunkAPI) => {
-    try {
-      return await brandService.createBrand(brandData);
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  }
-);
-export const updateABrand = createAsyncThunk(
-  "brand/update-brand",
-  async (brand, thunkAPI) => {
-    try {
-      return await brandService.updateBrand(brand);
+      return await colorService.createColor(colorData);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
   }
 );
 
-export const deleteABrand = createAsyncThunk(
-  "brand/delete-brand",
+export const getAColor = createAsyncThunk(
+  "color/get-color",
   async (id, thunkAPI) => {
     try {
-      return await brandService.deleteBrand(id);
+      return await colorService.getColor(id);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+export const updateAColor = createAsyncThunk(
+  "color/update-color",
+  async (color, thunkAPI) => {
+    try {
+      return await colorService.updateColor(color);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const deleteAColor = createAsyncThunk(
+  "color/delete-color",
+  async (id, thunkAPI) => {
+    try {
+      return await colorService.deleteColor(id);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -56,88 +57,88 @@ export const deleteABrand = createAsyncThunk(
 export const resetState = createAction("Reset_all");
 
 const initialState = {
-  brands: [],
+  colors: [],
   isError: false,
   isLoading: false,
   isSuccess: false,
   message: "",
 };
-export const brandSlice = createSlice({
-  name: "brands",
+export const colorSlice = createSlice({
+  name: "colors",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getBrands.pending, (state) => {
+      .addCase(getColors.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getBrands.fulfilled, (state, action) => {
+      .addCase(getColors.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
-        state.brands = action.payload;
+        state.colors = action.payload;
       })
-      .addCase(getBrands.rejected, (state, action) => {
+      .addCase(getColors.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error;
       })
-      .addCase(createBrand.pending, (state) => {
+      .addCase(createColor.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(createBrand.fulfilled, (state, action) => {
+      .addCase(createColor.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
-        state.createdBrand = action.payload;
+        state.createdColor = action.payload;
       })
-      .addCase(createBrand.rejected, (state, action) => {
+      .addCase(createColor.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error;
       })
-      .addCase(getABrand.pending, (state) => {
+      .addCase(updateAColor.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getABrand.fulfilled, (state, action) => {
+      .addCase(updateAColor.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
-        state.brandName = action.payload.title;
+        state.updatedColor = action.payload;
       })
-      .addCase(getABrand.rejected, (state, action) => {
+      .addCase(updateAColor.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error;
       })
-      .addCase(updateABrand.pending, (state) => {
+      .addCase(getAColor.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(updateABrand.fulfilled, (state, action) => {
+      .addCase(getAColor.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
-        state.updatedBrand = action.payload;
+        state.colorName = action.payload.title;
       })
-      .addCase(updateABrand.rejected, (state, action) => {
+      .addCase(getAColor.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error;
       })
-      .addCase(deleteABrand.pending, (state) => {
+      .addCase(deleteAColor.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(deleteABrand.fulfilled, (state, action) => {
+      .addCase(deleteAColor.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
-        state.deletedBrand = action.payload;
+        state.deletedColor = action.payload.title;
       })
-      .addCase(deleteABrand.rejected, (state, action) => {
+      .addCase(deleteAColor.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
@@ -146,5 +147,4 @@ export const brandSlice = createSlice({
       .addCase(resetState, () => initialState);
   },
 });
-
-export default brandSlice.reducer;
+export default colorSlice.reducer;

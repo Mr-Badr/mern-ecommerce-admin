@@ -5,9 +5,9 @@ import { AiFillDelete } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import {
-  /* deleteAProductCategory, */
+  deleteAProductCategory,
   getCategories,
-  /* resetState, */
+  resetState,
 } from "../features/pcategory/pcategorySlice";
 import CustomModal from "../components/CustomModal";
 
@@ -41,7 +41,7 @@ const Categorylist = () => {
   };
   const dispatch = useDispatch();
   useEffect(() => {
-    /* dispatch(resetState()); */
+    dispatch(resetState());
     dispatch(getCategories());
   }, []);
   const pCatStat = useSelector((state) => state.pCategory.pCategories);
@@ -69,7 +69,7 @@ const Categorylist = () => {
     });
   }
   const deleteCategory = (e) => {
-    /* dispatch(deleteAProductCategory(e)); */
+    dispatch(deleteAProductCategory(e));
     setOpen(false);
     setTimeout(() => {
       dispatch(getCategories());

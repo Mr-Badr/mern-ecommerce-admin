@@ -1,143 +1,143 @@
 import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
-import brandService from "./brandService";
+import blogService from "./blogService";
 
-export const getBrands = createAsyncThunk(
-  "brand/get-brands",
-  async (thunkAPI) => {
+export const getBlogs = createAsyncThunk("blog/get-blogs", async (thunkAPI) => {
+  try {
+    return await blogService.getBlogs();
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error);
+  }
+});
+export const createBlogs = createAsyncThunk(
+  "blog/create-blogs",
+  async (blogData, thunkAPI) => {
     try {
-      return await brandService.getBrands();
+      return await blogService.createBlog(blogData);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
   }
 );
-export const getABrand = createAsyncThunk(
-  "brand/get-brand",
+
+export const getABlog = createAsyncThunk(
+  "blog/get-blog",
   async (id, thunkAPI) => {
     try {
-      return await brandService.getBrand(id);
+      return await blogService.getBlog(id);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
   }
 );
-export const createBrand = createAsyncThunk(
-  "brand/create-brand",
-  async (brandData, thunkAPI) => {
-    try {
-      return await brandService.createBrand(brandData);
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  }
-);
-export const updateABrand = createAsyncThunk(
-  "brand/update-brand",
+export const updateABlog = createAsyncThunk(
+  "blog/update-blog",
   async (brand, thunkAPI) => {
     try {
-      return await brandService.updateBrand(brand);
+      return await blogService.updateBlog(brand);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
   }
 );
 
-export const deleteABrand = createAsyncThunk(
-  "brand/delete-brand",
+export const deleteABlog = createAsyncThunk(
+  "blog/delete-blog",
   async (id, thunkAPI) => {
     try {
-      return await brandService.deleteBrand(id);
+      return await blogService.deleteBlog(id);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
   }
 );
-
 export const resetState = createAction("Reset_all");
 
 const initialState = {
-  brands: [],
+  blogs: [],
   isError: false,
   isLoading: false,
   isSuccess: false,
   message: "",
 };
-export const brandSlice = createSlice({
-  name: "brands",
+export const blogSlice = createSlice({
+  name: "blogs",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getBrands.pending, (state) => {
+      .addCase(getBlogs.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getBrands.fulfilled, (state, action) => {
+      .addCase(getBlogs.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
-        state.brands = action.payload;
+        state.blogs = action.payload;
       })
-      .addCase(getBrands.rejected, (state, action) => {
+      .addCase(getBlogs.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error;
       })
-      .addCase(createBrand.pending, (state) => {
+      .addCase(createBlogs.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(createBrand.fulfilled, (state, action) => {
+      .addCase(createBlogs.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
-        state.createdBrand = action.payload;
+        state.createdBlog = action.payload;
       })
-      .addCase(createBrand.rejected, (state, action) => {
+      .addCase(createBlogs.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error;
       })
-      .addCase(getABrand.pending, (state) => {
+      .addCase(getABlog.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getABrand.fulfilled, (state, action) => {
+      .addCase(getABlog.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
-        state.brandName = action.payload.title;
+        state.blogName = action.payload.title;
+        state.blogDesc = action.payload.description;
+        state.blogCategory = action.payload.category;
+        state.blogImages = action.payload.images;
       })
-      .addCase(getABrand.rejected, (state, action) => {
+      .addCase(getABlog.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error;
       })
-      .addCase(updateABrand.pending, (state) => {
+      .addCase(updateABlog.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(updateABrand.fulfilled, (state, action) => {
+      .addCase(updateABlog.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
-        state.updatedBrand = action.payload;
+        state.updatedBlog = action.payload;
       })
-      .addCase(updateABrand.rejected, (state, action) => {
+      .addCase(updateABlog.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error;
       })
-      .addCase(deleteABrand.pending, (state) => {
+      .addCase(deleteABlog.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(deleteABrand.fulfilled, (state, action) => {
+      .addCase(deleteABlog.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
-        state.deletedBrand = action.payload;
+        state.deletedBlog = action.payload;
       })
-      .addCase(deleteABrand.rejected, (state, action) => {
+      .addCase(deleteABlog.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
@@ -146,5 +146,4 @@ export const brandSlice = createSlice({
       .addCase(resetState, () => initialState);
   },
 });
-
-export default brandSlice.reducer;
+export default blogSlice.reducer;

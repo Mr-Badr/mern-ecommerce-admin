@@ -1,143 +1,145 @@
 import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
-import brandService from "./brandService";
+import couponService from "./couponService";
 
-export const getBrands = createAsyncThunk(
-  "brand/get-brands",
+export const getAllCoupon = createAsyncThunk(
+  "coupon/get-coupons",
   async (thunkAPI) => {
     try {
-      return await brandService.getBrands();
+      return await couponService.getCoupons();
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
   }
 );
-export const getABrand = createAsyncThunk(
-  "brand/get-brand",
+export const createCoupon = createAsyncThunk(
+  "coupon/create-coupon",
+  async (couponData, thunkAPI) => {
+    try {
+      return await couponService.createCoupons(couponData);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+export const deleteACoupon = createAsyncThunk(
+  "coupon/delete-coupon",
   async (id, thunkAPI) => {
     try {
-      return await brandService.getBrand(id);
+      return await couponService.deleteCoupon(id);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
   }
 );
-export const createBrand = createAsyncThunk(
-  "brand/create-brand",
-  async (brandData, thunkAPI) => {
-    try {
-      return await brandService.createBrand(brandData);
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  }
-);
-export const updateABrand = createAsyncThunk(
-  "brand/update-brand",
-  async (brand, thunkAPI) => {
-    try {
-      return await brandService.updateBrand(brand);
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  }
-);
-
-export const deleteABrand = createAsyncThunk(
-  "brand/delete-brand",
+export const getACoupon = createAsyncThunk(
+  "coupon/get-coupon",
   async (id, thunkAPI) => {
     try {
-      return await brandService.deleteBrand(id);
+      return await couponService.getCoupon(id);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
   }
 );
-
+export const updateACoupon = createAsyncThunk(
+  "color/update-coupon",
+  async (coupon, thunkAPI) => {
+    try {
+      return await couponService.updateCoupon(coupon);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
 export const resetState = createAction("Reset_all");
 
 const initialState = {
-  brands: [],
+  coupons: [],
   isError: false,
   isLoading: false,
   isSuccess: false,
   message: "",
 };
-export const brandSlice = createSlice({
-  name: "brands",
+export const couponSlice = createSlice({
+  name: "coupons",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getBrands.pending, (state) => {
+      .addCase(getAllCoupon.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getBrands.fulfilled, (state, action) => {
+      .addCase(getAllCoupon.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
-        state.brands = action.payload;
+        state.coupons = action.payload;
       })
-      .addCase(getBrands.rejected, (state, action) => {
+      .addCase(getAllCoupon.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error;
       })
-      .addCase(createBrand.pending, (state) => {
+      .addCase(createCoupon.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(createBrand.fulfilled, (state, action) => {
+      .addCase(createCoupon.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
-        state.createdBrand = action.payload;
+        state.createdCoupon = action.payload;
       })
-      .addCase(createBrand.rejected, (state, action) => {
+      .addCase(createCoupon.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error;
       })
-      .addCase(getABrand.pending, (state) => {
+      .addCase(deleteACoupon.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getABrand.fulfilled, (state, action) => {
+      .addCase(deleteACoupon.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
-        state.brandName = action.payload.title;
+        state.deletedCoupon = action.payload;
       })
-      .addCase(getABrand.rejected, (state, action) => {
+      .addCase(deleteACoupon.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error;
       })
-      .addCase(updateABrand.pending, (state) => {
+      .addCase(getACoupon.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(updateABrand.fulfilled, (state, action) => {
+      .addCase(getACoupon.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
-        state.updatedBrand = action.payload;
+        state.couponName = action.payload[0].name;
+        state.couponDiscount = action.payload[0].discount;
+        state.couponExpiry = action.payload[0].expiry;
       })
-      .addCase(updateABrand.rejected, (state, action) => {
+      .addCase(getACoupon.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error;
       })
-      .addCase(deleteABrand.pending, (state) => {
+      .addCase(updateACoupon.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(deleteABrand.fulfilled, (state, action) => {
+      .addCase(updateACoupon.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
-        state.deletedBrand = action.payload;
+        state.couponName = action.payload[0].name;
+        state.couponDiscount = action.payload[0].discount;
+        state.couponExpiry = action.payload[0].expiry;
       })
-      .addCase(deleteABrand.rejected, (state, action) => {
+      .addCase(updateACoupon.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
@@ -147,4 +149,4 @@ export const brandSlice = createSlice({
   },
 });
 
-export default brandSlice.reducer;
+export default couponSlice.reducer;

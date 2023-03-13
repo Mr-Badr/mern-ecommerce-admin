@@ -1,9 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Table } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
 import { getUsers } from "../features/cutomers/customerSlice";
-
 const columns = [
   {
     title: "SNo",
@@ -24,16 +22,6 @@ const columns = [
   },
 ];
 
-const data1 = [];
-for (let i = 0; i < 46; i++) {
-  data1.push({
-    key: i,
-    name: `Edward King ${i}`,
-    product: 32,
-    staus: `London, Park Lane no. ${i}`,
-  });
-}
-
 const Customers = () => {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -51,6 +39,7 @@ const Customers = () => {
       });
     }
   }
+
   return (
     <div>
       <h3 className="mb-4 title">Customers</h3>

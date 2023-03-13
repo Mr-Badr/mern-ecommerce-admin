@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Table } from "antd";
-import { useDispatch, useSelector } from "react-redux";
-import { deleteAColor, getColors } from "../features/color/colorSlice";
 import { BiEdit } from "react-icons/bi";
 import { AiFillDelete } from "react-icons/ai";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteACoupon, getAllCoupon } from "../features/coupon/couponSlice";
 import CustomModal from "../components/CustomModal";
 
 const columns = [
@@ -12,9 +12,21 @@ const columns = [
     title: "SNo",
     dataIndex: "key",
   },
+
   {
     title: "Name",
     dataIndex: "name",
+    sorter: (a, b) => a.name.length - b.name.length,
+  },
+  {
+    title: "Discount",
+    dataIndex: "discount",
+    sorter: (a, b) => a.discount - b.discount,
+  },
+  {
+    title: "Expiry",
+    dataIndex: "expiry",
+    sorter: (a, b) => a.name.length - b.name.length,
   },
   {
     title: "Action",
@@ -22,12 +34,12 @@ const columns = [
   },
 ];
 
-const Colorlist = () => {
+const Couponlist = () => {
   const [open, setOpen] = useState(false);
-  const [colorId, setcolorId] = useState("");
+  const [couponId, setcouponId] = useState("");
   const showModal = (e) => {
     setOpen(true);
-    setcolorId(e);
+    setcouponId(e);
   };
 
   const hideModal = () => {
@@ -35,25 +47,27 @@ const Colorlist = () => {
   };
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getColors());
+    dispatch(getAllCoupon());
   }, []);
-  const colorState = useSelector((state) => state.color.colors);
+  const couponState = useSelector((state) => state.coupon.coupons);
   const data1 = [];
-  for (let i = 0; i < colorState.length; i++) {
+  for (let i = 0; i < couponState.length; i++) {
     data1.push({
       key: i + 1,
-      name: colorState[i].title,
+      name: couponState[i].name,
+      discount: couponState[i].discount,
+      expiry: new Date(couponState[i].expiry).toLocaleString(),
       action: (
         <>
           <Link
-            to={`/admin/color/${colorState[i]._id}`}
+            to={`/admin/coupon/${couponState[i]._id}`}
             className=" fs-3 text-danger"
           >
             <BiEdit />
           </Link>
           <button
             className="ms-3 fs-3 text-danger bg-transparent border-0"
-            onClick={() => showModal(colorState[i]._id)}
+            onClick={() => showModal(couponState[i]._id)}
           >
             <AiFillDelete />
           </button>
@@ -61,17 +75,17 @@ const Colorlist = () => {
       ),
     });
   }
-  const deleteColor = (e) => {
-    dispatch(deleteAColor(e));
+  const deleteCoupon = (e) => {
+    dispatch(deleteACoupon(e));
 
     setOpen(false);
     setTimeout(() => {
-      dispatch(getColors());
+      dispatch(getAllCoupon());
     }, 100);
   };
   return (
     <div>
-      <h3 className="mb-4 title">Colors</h3>
+      <h3 className="mb-4 title">Coupons</h3>
       <div>
         <Table columns={columns} dataSource={data1} />
       </div>
@@ -79,12 +93,12 @@ const Colorlist = () => {
         hideModal={hideModal}
         open={open}
         performAction={() => {
-          deleteColor(colorId);
+          deleteCoupon(couponId);
         }}
-        title="Are you sure you want to delete this color?"
+        title="Are you sure you want to delete this Coupon?"
       />
     </div>
   );
 };
 
-export default Colorlist;
+export default Couponlist;
